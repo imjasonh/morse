@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morse Code Haptics</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>Morse Code Haptics</h1>
+      <p class="subtitle">Type text to feel it in Morse &middot; Tap to decode Morse</p>
+    </header>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="encode">Text &rarr; Morse</button>
+      <button class="tab" data-tab="decode">Tap Morse &rarr; Text</button>
+      <button class="tab" data-tab="reference">Reference</button>
+    </div>
+
+    <!-- Encode Tab -->
+    <section id="tab-encode" class="tab-content active">
+      <label for="text-input">Enter text</label>
+      <input
+        type="text"
+        id="text-input"
+        placeholder="Type a message..."
+        autocomplete="off"
+        maxlength="200"
+      />
+
+      <div class="morse-display" id="morse-output" aria-live="polite">
+        <span class="placeholder-text">Morse code appears here</span>
+      </div>
+
+      <div class="controls">
+        <button id="play-btn" class="btn primary" disabled>
+          <span class="icon">&#9654;</span> Play
+        </button>
+        <button id="stop-btn" class="btn" disabled>
+          <span class="icon">&#9632;</span> Stop
+        </button>
+      </div>
+
+      <div class="settings">
+        <label for="speed-slider">Speed</label>
+        <input type="range" id="speed-slider" min="1" max="10" value="5" />
+        <span id="speed-label">5 WPM</span>
+      </div>
+
+      <div class="playback-indicator" id="playback-indicator">
+        <div class="signal-light" id="signal-light"></div>
+        <span id="current-char"></span>
+      </div>
+    </section>
+
+    <!-- Decode Tab -->
+    <section id="tab-decode" class="tab-content">
+      <p class="instructions">
+        Tap or hold the button below to input Morse code.<br>
+        Short tap = dot (<strong>&middot;</strong>), long press = dash (<strong>&ndash;</strong>).<br>
+        Pauses are detected automatically.
+      </p>
+
+      <button id="tap-btn" class="tap-area" aria-label="Tap for Morse input">
+        TAP
+      </button>
+
+      <div class="morse-display" id="tap-morse" aria-live="polite">
+        <span class="placeholder-text">Your Morse input appears here</span>
+      </div>
+
+      <div class="decoded-output" id="decoded-output" aria-live="polite">
+        <span class="placeholder-text">Decoded text appears here</span>
+      </div>
+
+      <div class="controls">
+        <button id="clear-tap-btn" class="btn">Clear</button>
+      </div>
+    </section>
+
+    <!-- Reference Tab -->
+    <section id="tab-reference" class="tab-content">
+      <div class="reference-grid" id="reference-grid"></div>
+    </section>
+
+    <footer>
+      <p>
+        Haptic feedback requires a device with vibration support.
+        <span id="haptic-status"></span>
+      </p>
+    </footer>
+  </div>
+
+  <script src="morse.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
