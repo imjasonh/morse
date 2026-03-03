@@ -1,9 +1,13 @@
 /**
  * Morse Code Haptics — main application logic.
  */
-import { WebHaptics } from "https://cdn.jsdelivr.net/npm/web-haptics/dist/index.mjs";
-
-const haptics = new WebHaptics();
+let haptics = { trigger() {}, cancel() {} };
+try {
+  const { WebHaptics } = await import("https://cdn.jsdelivr.net/npm/web-haptics/dist/index.mjs");
+  haptics = new WebHaptics();
+} catch (_) {
+  // Haptics library unavailable — app works fine without it
+}
 
 // --- DOM refs ---
 const textInput = document.getElementById("text-input");
