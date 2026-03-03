@@ -38,6 +38,8 @@ let tapLetters = [];
 let tapCurrentMorse = [];
 let letterTimeout = null;
 let wordTimeout = null;
+let tapOsc = null;
+let tapGain = null;
 
 // --- Haptics helper ---
 function vibrate(durationMs) {
@@ -316,6 +318,30 @@ function addWordGap() {
   renderDecoded();
 }
 
+function startTapTone() {
+  const ctx = getAudioCtx();
+  tapGain = ctx.createGain();
+  tapGain.gain.setValueAtTime(0, ctx.currentTime);
+  tapGain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.005);
+  tapGain.connect(ctx.destination);
+
+  tapOsc = ctx.createOscillator();
+  tapOsc.type = "sine";
+  tapOsc.frequency.value = 600;
+  tapOsc.connect(tapGain);
+  tapOsc.start();
+}
+
+function stopTapTone() {
+  if (!tapOsc) return;
+  const ctx = getAudioCtx();
+  tapGain.gain.setValueAtTime(tapGain.gain.value, ctx.currentTime);
+  tapGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.005);
+  tapOsc.stop(ctx.currentTime + 0.01);
+  tapOsc = null;
+  tapGain = null;
+}
+
 function onTapStart(e) {
   e.preventDefault();
   tapDown = Date.now();
@@ -325,12 +351,14 @@ function onTapStart(e) {
   clearTimeout(wordTimeout);
 
   vibrate(10);
+  startTapTone();
 }
 
 function onTapEnd(e) {
   e.preventDefault();
   if (!tapDown) return;
   tapBtn.classList.remove("pressed");
+  stopTapTone();
 
   const duration = Date.now() - tapDown;
   tapDown = 0;
