@@ -372,16 +372,13 @@ footer {
   color: var(--text-muted);
 }
 
-#haptic-status {
-  font-weight: 600;
+footer a {
+  color: var(--primary);
+  text-decoration: none;
 }
 
-#haptic-status.supported {
-  color: var(--dot-color);
-}
-
-#haptic-status.unsupported {
-  color: var(--danger);
+footer a:hover {
+  text-decoration: underline;
 }
 
 /* Responsive */
